@@ -1,0 +1,47 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/collectibles/coin.gd" id="1_coin"]
+[ext_resource type="Texture2D" path="res://assets/textures/coin_gold.png" id="2_coin_tex"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_coin_face"]
+top_radius = 0.42
+bottom_radius = 0.42
+height = 0.08
+
+[sub_resource type="StandardMaterial3D" id="CoinFaceMat"]
+albedo_texture = ExtResource("2_coin_tex")
+metallic = 0.95
+roughness = 0.18
+emission_enabled = true
+emission = Color(0.95, 0.75, 0.15, 1)
+emission_energy_multiplier = 0.2
+
+[sub_resource type="TorusMesh" id="TorusMesh_rim"]
+inner_radius = 0.38
+outer_radius = 0.44
+rings = 24
+ring_segments = 12
+
+[sub_resource type="StandardMaterial3D" id="CoinRimMat"]
+albedo_color = Color(1, 0.82, 0.12, 1)
+metallic = 0.95
+roughness = 0.15
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_coin"]
+radius = 0.55
+
+[node name="Coin" type="Area3D"]
+script = ExtResource("1_coin")
+
+[node name="CoinFace" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_coin_face")
+surface_material_override/0 = SubResource("CoinFaceMat")
+
+[node name="CoinRim" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("TorusMesh_rim")
+surface_material_override/0 = SubResource("CoinRimMat")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_coin")

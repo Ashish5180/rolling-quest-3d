@@ -1,0 +1,66 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/obstacles/sweeper_wiper.gd" id="1_wiper"]
+[ext_resource type="Texture2D" path="res://assets/textures/hazard_stripes.png" id="2_hazard_tex"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_post"]
+top_radius = 0.35
+bottom_radius = 0.4
+height = 1.5
+
+[sub_resource type="StandardMaterial3D" id="PostMat"]
+albedo_color = Color(0.15, 0.17, 0.2, 1)
+metallic = 0.85
+roughness = 0.25
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_post"]
+height = 1.5
+radius = 0.4
+
+[sub_resource type="BoxMesh" id="BoxMesh_arm"]
+size = Vector3(2.3, 0.9, 0.35)
+
+[sub_resource type="StandardMaterial3D" id="ArmMat"]
+albedo_texture = ExtResource("2_hazard_tex")
+metallic = 0.5
+roughness = 0.35
+uv1_scale = Vector3(2.5, 1, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_arm"]
+size = Vector3(2.3, 0.9, 0.35)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hit"]
+size = Vector3(2.4, 1, 0.55)
+
+[node name="SweeperWiper" type="Node3D"]
+script = ExtResource("1_wiper")
+
+[node name="PivotPost" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+
+[node name="PostMesh" type="MeshInstance3D" parent="PivotPost"]
+mesh = SubResource("CylinderMesh_post")
+surface_material_override/0 = SubResource("PostMat")
+
+[node name="PostCol" type="CollisionShape3D" parent="PivotPost"]
+shape = SubResource("CylinderShape3D_post")
+
+[node name="WiperArm" type="AnimatableBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+sync_to_physics = false
+
+[node name="ArmMesh" type="MeshInstance3D" parent="WiperArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, 0, 0)
+mesh = SubResource("BoxMesh_arm")
+surface_material_override/0 = SubResource("ArmMat")
+
+[node name="ArmCol" type="CollisionShape3D" parent="WiperArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, 0, 0)
+shape = SubResource("BoxShape3D_arm")
+
+[node name="HitArea" type="Area3D" parent="WiperArm"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.15, 0, 0)
+
+[node name="HitCol" type="CollisionShape3D" parent="WiperArm/HitArea"]
+shape = SubResource("BoxShape3D_hit")
+

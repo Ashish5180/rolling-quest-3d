@@ -1,0 +1,72 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/obstacles/wind_zone.gd" id="1_wind"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_trigger"]
+size = Vector3(3.4, 3, 16)
+
+[sub_resource type="BoxMesh" id="BoxMesh_streamer"]
+size = Vector3(1.2, 0.04, 0.25)
+
+[sub_resource type="StandardMaterial3D" id="StreamerMat"]
+transparency = 1
+albedo_color = Color(0.7, 0.95, 1, 0.45)
+emission_enabled = true
+emission = Color(0.4, 0.85, 1, 1)
+emission_energy_multiplier = 1.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pylon"]
+top_radius = 0.08
+bottom_radius = 0.08
+height = 2.0
+
+[sub_resource type="StandardMaterial3D" id="PylonMat"]
+albedo_color = Color(0.1, 0.8, 1, 1)
+emission_enabled = true
+emission = Color(0, 0.6, 0.9, 1)
+emission_energy_multiplier = 1.0
+
+[node name="WindZone" type="Area3D"]
+script = ExtResource("1_wind")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_trigger")
+
+[node name="Streamers" type="Node3D" parent="."]
+
+[node name="Streamer1" type="MeshInstance3D" parent="Streamers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.4, -6)
+mesh = SubResource("BoxMesh_streamer")
+surface_material_override/0 = SubResource("StreamerMat")
+
+[node name="Streamer2" type="MeshInstance3D" parent="Streamers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.7, -3)
+mesh = SubResource("BoxMesh_streamer")
+surface_material_override/0 = SubResource("StreamerMat")
+
+[node name="Streamer3" type="MeshInstance3D" parent="Streamers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 0.35, 1)
+mesh = SubResource("BoxMesh_streamer")
+surface_material_override/0 = SubResource("StreamerMat")
+
+[node name="Streamer4" type="MeshInstance3D" parent="Streamers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 0.6, 4)
+mesh = SubResource("BoxMesh_streamer")
+surface_material_override/0 = SubResource("StreamerMat")
+
+[node name="Streamer5" type="MeshInstance3D" parent="Streamers"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0.5, 6)
+mesh = SubResource("BoxMesh_streamer")
+surface_material_override/0 = SubResource("StreamerMat")
+
+[node name="PylonLeft" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2, 1, 7.5)
+mesh = SubResource("CylinderMesh_pylon")
+surface_material_override/0 = SubResource("PylonMat")
+
+[node name="PylonRight" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 1, 7.5)
+mesh = SubResource("CylinderMesh_pylon")
+surface_material_override/0 = SubResource("PylonMat")
+

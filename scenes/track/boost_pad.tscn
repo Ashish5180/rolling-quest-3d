@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/track/boost_pad.gd" id="1_boost_pad"]
+[ext_resource type="Texture2D" path="res://assets/textures/boost_pad.png" id="2_pad_tex"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_pad"]
+size = Vector3(2.4, 0.08, 2.6)
+
+[sub_resource type="StandardMaterial3D" id="PadMat"]
+albedo_texture = ExtResource("2_pad_tex")
+metallic = 0.4
+roughness = 0.2
+emission_enabled = true
+emission_texture = ExtResource("2_pad_tex")
+emission = Color(0.2, 0.85, 1, 1)
+emission_energy_multiplier = 1.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_rail"]
+size = Vector3(0.12, 0.14, 2.6)
+
+[sub_resource type="StandardMaterial3D" id="RailMat"]
+albedo_color = Color(0.1, 0.95, 0.85, 1)
+emission_enabled = true
+emission = Color(0.1, 1, 0.9, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_boost"]
+size = Vector3(2.6, 0.6, 2.6)
+
+[node name="BoostPad" type="Area3D"]
+script = ExtResource("1_boost_pad")
+
+[node name="PadMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+mesh = SubResource("BoxMesh_pad")
+surface_material_override/0 = SubResource("PadMat")
+
+[node name="RailL" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, 0.07, 0)
+mesh = SubResource("BoxMesh_rail")
+surface_material_override/0 = SubResource("RailMat")
+
+[node name="RailR" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 0.07, 0)
+mesh = SubResource("BoxMesh_rail")
+surface_material_override/0 = SubResource("RailMat")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+shape = SubResource("BoxShape3D_boost")
+

@@ -1,0 +1,73 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/obstacles/rotating_bar.gd" id="1_rotating"]
+[ext_resource type="Texture2D" path="res://assets/textures/hazard_stripes.png" id="2_hazard_tex"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pivot"]
+top_radius = 0.36
+bottom_radius = 0.42
+height = 4.0
+
+[sub_resource type="StandardMaterial3D" id="PivotMat"]
+albedo_color = Color(0.18, 0.2, 0.24, 1)
+metallic = 0.85
+roughness = 0.25
+
+[sub_resource type="SphereMesh" id="SphereMesh_beacon"]
+radius = 0.22
+height = 0.44
+
+[sub_resource type="StandardMaterial3D" id="BeaconMat"]
+albedo_color = Color(1, 0.7, 0.05, 1)
+emission_enabled = true
+emission = Color(1, 0.7, 0.05, 1)
+emission_energy_multiplier = 2.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_blade_x"]
+size = Vector3(3.5, 3.2, 0.4)
+
+[sub_resource type="BoxMesh" id="BoxMesh_blade_z"]
+size = Vector3(0.4, 3.2, 3.5)
+
+[sub_resource type="StandardMaterial3D" id="BladeMat"]
+albedo_texture = ExtResource("2_hazard_tex")
+uv1_scale = Vector3(3, 3, 1)
+metallic = 0.45
+roughness = 0.35
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_blade_x"]
+size = Vector3(3.5, 3.2, 0.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_blade_z"]
+size = Vector3(0.4, 3.2, 3.5)
+
+[node name="RotatingBar" type="AnimatableBody3D"]
+script = ExtResource("1_rotating")
+
+[node name="PivotMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
+mesh = SubResource("CylinderMesh_pivot")
+surface_material_override/0 = SubResource("PivotMat")
+
+[node name="BeaconMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.15, 0)
+mesh = SubResource("SphereMesh_beacon")
+surface_material_override/0 = SubResource("BeaconMat")
+
+[node name="Blade1" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+mesh = SubResource("BoxMesh_blade_x")
+surface_material_override/0 = SubResource("BladeMat")
+
+[node name="CollisionBlade1" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+shape = SubResource("BoxShape3D_blade_x")
+
+[node name="Blade2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+mesh = SubResource("BoxMesh_blade_z")
+surface_material_override/0 = SubResource("BladeMat")
+
+[node name="CollisionBlade2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+shape = SubResource("BoxShape3D_blade_z")

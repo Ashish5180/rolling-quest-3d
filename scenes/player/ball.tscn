@@ -1,0 +1,36 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/player/ball_controller.gd" id="1_ctrl"]
+[ext_resource type="Script" path="res://scripts/input/touch_controller.gd" id="2_touch"]
+[ext_resource type="Texture2D" path="res://assets/textures/ball_arcade.png" id="3_ball_tex"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ball"]
+radius = 0.45
+height = 0.9
+
+[sub_resource type="StandardMaterial3D" id="BallMat"]
+albedo_texture = ExtResource("3_ball_tex")
+metallic = 0.35
+roughness = 0.25
+
+[sub_resource type="SphereShape3D" id="SphereShape_ball"]
+radius = 0.45
+
+[sub_resource type="PhysicsMaterial" id="PhysMat_ball"]
+friction = 0.9
+bounce = 0.05
+
+[node name="Ball" type="RigidBody3D"]
+mass = 1.0
+physics_material_override = SubResource("PhysMat_ball")
+script = ExtResource("1_ctrl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_ball")
+surface_material_override/0 = SubResource("BallMat")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape_ball")
+
+[node name="TouchController" type="Node" parent="."]
+script = ExtResource("2_touch")

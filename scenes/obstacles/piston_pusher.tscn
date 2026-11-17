@@ -1,0 +1,88 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/obstacles/piston_pusher.gd" id="1_pusher"]
+[ext_resource type="Texture2D" path="res://assets/textures/hazard_stripes.png" id="2_hazard_tex"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_housing"]
+size = Vector3(1.2, 2.2, 1.8)
+
+[sub_resource type="StandardMaterial3D" id="HousingMat"]
+albedo_color = Color(0.18, 0.2, 0.24, 1)
+metallic = 0.8
+roughness = 0.3
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_housing"]
+size = Vector3(1.2, 2.2, 1.8)
+
+[sub_resource type="SphereMesh" id="SphereMesh_beacon"]
+radius = 0.25
+height = 0.5
+
+[sub_resource type="StandardMaterial3D" id="BeaconMat"]
+albedo_color = Color(1, 0.7, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.7, 0.1, 1)
+emission_energy_multiplier = 1.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_rod"]
+size = Vector3(1, 0.3, 0.3)
+
+[sub_resource type="StandardMaterial3D" id="RodMat"]
+albedo_color = Color(0.75, 0.78, 0.82, 1)
+metallic = 0.95
+roughness = 0.15
+
+[sub_resource type="BoxMesh" id="BoxMesh_head"]
+size = Vector3(1, 1.8, 1.6)
+
+[sub_resource type="StandardMaterial3D" id="HeadMat"]
+albedo_texture = ExtResource("2_hazard_tex")
+metallic = 0.5
+roughness = 0.35
+uv1_scale = Vector3(2, 2, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_head"]
+size = Vector3(1, 1.8, 1.6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hit"]
+size = Vector3(1.2, 1.9, 1.7)
+
+[node name="PistonPusher" type="Node3D"]
+script = ExtResource("1_pusher")
+
+[node name="Housing" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+
+[node name="HousingMesh" type="MeshInstance3D" parent="Housing"]
+mesh = SubResource("BoxMesh_housing")
+surface_material_override/0 = SubResource("HousingMat")
+
+[node name="HousingCol" type="CollisionShape3D" parent="Housing"]
+shape = SubResource("BoxShape3D_housing")
+
+[node name="WarningBeacon" type="MeshInstance3D" parent="Housing"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+mesh = SubResource("SphereMesh_beacon")
+surface_material_override/0 = SubResource("BeaconMat")
+
+[node name="PistonRod" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+mesh = SubResource("BoxMesh_rod")
+surface_material_override/0 = SubResource("RodMat")
+
+[node name="PistonHead" type="AnimatableBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+sync_to_physics = false
+
+[node name="HeadMesh" type="MeshInstance3D" parent="PistonHead"]
+mesh = SubResource("BoxMesh_head")
+surface_material_override/0 = SubResource("HeadMat")
+
+[node name="HeadCol" type="CollisionShape3D" parent="PistonHead"]
+shape = SubResource("BoxShape3D_head")
+
+[node name="HitArea" type="Area3D" parent="PistonHead"]
+
+[node name="HitCol" type="CollisionShape3D" parent="PistonHead/HitArea"]
+shape = SubResource("BoxShape3D_hit")
+
